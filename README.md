@@ -23,4 +23,4 @@ Below is an initial color story for the look and feel of the app.
 
 Below is a first draft of an ERD for the application.
 
-![ERD](./assets/Self-care-ERD.png)
+![ERD](./assets/ERD-second.png)
