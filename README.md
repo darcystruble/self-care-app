@@ -12,7 +12,7 @@ User Stories:
 
 Below is an initial rendering with the general layout of the app.
 
-![Rendering of an iPhone with Self Care App](./assets/Self-Care_log.png)
+![Rendering of an iPhone with Self Care App](./assets/phonescreen-app.png)
 
 Below is an initial color story for the look and feel of the app.
 
