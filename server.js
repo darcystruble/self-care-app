@@ -7,6 +7,7 @@ const cors = require('cors')
 const userController = require('./controllers/userController')
 const dayController = require('./controllers/dayController')
 const gratitudeController = require('./controllers/gratitudeController')
+const todoController = require('./controllers/todoController')
 
 const PORT = process.env.PORT || 3001
 
@@ -36,5 +37,11 @@ app.get('/gratitude/:id', gratitudeController.getOneGrat)
 app.post('/gratitude', gratitudeController.createGrat)
 app.put('/gratitude/:id', gratitudeController.updateGrat)
 app.delete('/gratitude/:id', gratitudeController.deleteGrat)
+
+app.get('/todo', todoController.getAllTodo)
+app.get('/todo/:id', todoController.getOneTodo)
+app.post('/todo', todoController.createTodo)
+app.put('/todo/:id', todoController.updateTodo)
+app.delete('/todo/:id', todoController.deleteTodo)
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`))
