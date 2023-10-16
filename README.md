@@ -24,3 +24,8 @@ Below is an initial color story for the look and feel of the app.
 Below is a first draft of an ERD for the application.
 
 ![ERD](./assets/ERD-second.png)
+
+## Resources
+
+Calendar Tutorial:
+https://www.educative.io/answers/how-to-create-an-animated-calendar-with-html-and-css
