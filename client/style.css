@@ -74,6 +74,7 @@ h2 {
     width: 340px;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(5, 1fr);
     gap: 2px;
 }
  .cal-day {
@@ -178,6 +179,8 @@ h2 {
     padding: 10px 20px 10px 20px;
 }
 .grat-spacing {
+    border-top: 2px solid #f3a6b470;
+    padding-top: 7px;
     margin-bottom: 25px;
 }
 #gratitude-input {
@@ -196,9 +199,12 @@ h2 {
         justify-content: center;
     }
     .app-body {
-        max-width: 400px;
-        min-height: 740px;
+        margin: 30px auto;
+        width: 400px;
+        height: 740px;
+        overflow: scroll;
         background-color: white;
-
+        box-shadow: 7px 7px #173b3c;
+        border-radius: 15px;
     }
 }

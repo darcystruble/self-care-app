@@ -3,9 +3,10 @@ const { Schema } = require('mongoose')
 
 const Todo = new Schema(
     {
-     text: {type: String, required: true},
-     isComplete: {type: Boolean, default: false, required: true},
-     userId: {type: Schema.Types.ObjectId, ref: 'user'}
+        date: { type: Date, required: true},
+        text: {type: String, required: true},
+        isComplete: {type: Boolean, default: false, required: true},
+        userId: {type: Schema.Types.ObjectId, ref: 'user', required: true}
     },
     { timestamps: true }
 )

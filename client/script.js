@@ -15,15 +15,20 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 let curDate = new Date()
 let curMonth = curDate.getMonth()
 let curYear = curDate.getFullYear()
+let compareDate = curDate.toISOString()
 const base = 'http://localhost:3001/'
 const currentUser = '652d563b750183a1591c276e'
+// newObj.date = (getActivitiesTable.data[x].start_date_local.slice(0, 10))
 console.log(curDate)
 
 // FUNCTIONS
 // axios testing
 const tester = async () => {
     let testing = await axios.get(`${base}todo`)
-    console.log(testing)
+    let findingDate = testing.data[2].date
+    console.log(findingDate.slice(0, 10))
+    let newDate = curDate.toISOString()
+    console.log(compareDate.slice(0, 10))
 }
 tester()
 
@@ -67,13 +72,24 @@ const makeCal = (month, year) => {
     
 }
 
-// task adder
+// tasks functions
+const listTasks = async () => {
+    let tasks = await axios.get(`${base}todo`)
+    tasks.data.forEach((task) => {
+        if (task.date.slice(0, 10) == compareDate.slice(0, 10)){
+            let taskLi = document.createElement('li')
+            taskLi.innerText = task.text
+            checklist.appendChild(taskLi)
+        }
+    })
+}
+
 const addNewTask = async () => {
+    await axios.post(`${base}todo`, { date: new Date(), text: taskInput.value, isComplete: false, userId: currentUser })
     let newLi = document.createElement('li')
     newLi.innerText = taskInput.value
     checklist.appendChild(newLi)
-    console.log(`${base}todo`)
-    await axios.post(`${base}todo`, {date: new Date(), text: taskInput.value, isComplete: false, userId: currentUser})
+    taskInput.value = ''
 }
 
 // gratitude journal
@@ -87,6 +103,8 @@ const oldPosts = async () => {
         console.log(post.entry)
         if (post.userId == currentUser) {
             onePost.innerText = post.entry
+        } else {
+            return
         }
         oldGratResults.appendChild(onePost)
     })
@@ -96,6 +114,7 @@ oldPosts()
 
 // CALL FUNCTIONS
 makeCal(curMonth, curYear)
+listTasks()
 
 // ONCLICK
 taskBtn.addEventListener('click', addNewTask)
