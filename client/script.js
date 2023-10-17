@@ -19,7 +19,7 @@ let compareDate = curDate.toISOString()
 const base = 'http://localhost:3001/'
 const currentUser = '652d563b750183a1591c276e'
 // newObj.date = (getActivitiesTable.data[x].start_date_local.slice(0, 10))
-console.log(curDate)
+// console.log(curDate)
 
 // FUNCTIONS
 // axios testing
@@ -30,7 +30,7 @@ const tester = async () => {
     let newDate = curDate.toISOString()
     console.log(compareDate.slice(0, 10))
 }
-tester()
+// tester()
 
 // Greetin the user
 const displayName = async () => {
@@ -76,21 +76,43 @@ const makeCal = (month, year) => {
 const listTasks = async () => {
     let tasks = await axios.get(`${base}todo`)
     tasks.data.forEach((task) => {
-        if (task.date.slice(0, 10) == compareDate.slice(0, 10)){
+        if (task.date.slice(0, 10) === compareDate.slice(0, 10)){
             let taskLi = document.createElement('li')
+            taskLi.classList.add('list')
             taskLi.innerText = task.text
             checklist.appendChild(taskLi)
+            if (task.isComplete === true){
+                taskLi.classList.add('checked')
+            }
         }
+    })
+    document.querySelectorAll('.list').forEach((bullet) => {
+        bullet.addEventListener('click', () => {
+            tasks.data.forEach((task) => {
+                console.log(task.isComplete)
+                if (bullet.innerText === task.text && task.isComplete === false) {
+                    console.log(task._id)
+                    axios.put(`${base}todo/${task._id}`, { isComplete: true })
+                    bullet.classList.add('checked')
+                }
+                if (bullet.innerText === task.text && task.isComplete === true) {
+                    axios.put(`${base}todo/${task._id}`, { isComplete: false })
+                    bullet.classList.remove('checked')
+                }
+            })
+        })
     })
 }
 
 const addNewTask = async () => {
     await axios.post(`${base}todo`, { date: new Date(), text: taskInput.value, isComplete: false, userId: currentUser })
     let newLi = document.createElement('li')
+    newLi.classList.add('list')
     newLi.innerText = taskInput.value
     checklist.appendChild(newLi)
     taskInput.value = ''
 }
+
 
 // gratitude journal
 const oldPosts = async () => {
@@ -100,8 +122,8 @@ const oldPosts = async () => {
     oldPostsAxios.data.forEach((post) => {
         let onePost = document.createElement('div')
         onePost.classList.add('grat-spacing')
-        console.log(post.entry)
-        if (post.userId == currentUser) {
+        // console.log(post.entry)
+        if (post.userId == currentUser && post.date.slice(0, 10) !== compareDate.slice(0 ,10)) {
             onePost.innerText = post.entry
         } else {
             return
@@ -143,7 +165,7 @@ document.querySelector('#mood1').addEventListener('click', () => {
     document.querySelectorAll('.cal-day').forEach((day) => {
         day.addEventListener('click', () => {
             day.classList.remove('happy', 'calm', 'tired', 'stressed', 'sad')
-            console.log(day.innerText)
+            // console.log(day.innerText)
             day.innerText = '🤩'
             day.classList.add('motivated')
         })
@@ -154,7 +176,7 @@ document.querySelector('#mood2').addEventListener('click', ()=> {
     document.querySelectorAll('.cal-day').forEach((day) => {
         day.addEventListener('click', () => {
             day.classList.remove('calm', 'tired', 'stressed', 'sad')
-            console.log(day.innerText)
+            // console.log(day.innerText)
             day.innerText = '😄'
             day.classList.add('happy')
         })
@@ -165,7 +187,7 @@ document.querySelector('#mood3').addEventListener('click', ()=> {
     document.querySelectorAll('.cal-day').forEach((day) => {
         day.addEventListener('click', () => {
             day.classList.remove('tired', 'stressed', 'sad')
-            console.log(day.innerText)
+            // console.log(day.innerText)
             day.innerText = '😌'
             day.classList.add('calm')
         })
@@ -175,7 +197,7 @@ document.querySelector('#mood4').addEventListener('click', ()=> {
     document.querySelectorAll('.cal-day').forEach((day) => {
         day.addEventListener('click', () => {
             day.classList.remove('stressed', 'sad')
-            console.log(day.innerText)
+            // console.log(day.innerText)
             day.innerText = '😴'
             day.classList.add('tired')
         })
@@ -185,7 +207,7 @@ document.querySelector('#mood5').addEventListener('click', ()=> {
     document.querySelectorAll('.cal-day').forEach((day) => {
         day.addEventListener('click', () => {
             day.classList.remove('sad')
-            console.log(day.innerText)
+            // console.log(day.innerText)
             day.innerText = '😖'
             day.classList.add('stressed')
         })
@@ -194,7 +216,7 @@ document.querySelector('#mood5').addEventListener('click', ()=> {
 document.querySelector('#mood6').addEventListener('click', ()=> {
     document.querySelectorAll('.cal-day').forEach((day) => {
         day.addEventListener('click', () => {
-            console.log(day.innerText)
+            // console.log(day.innerText)
             day.innerText = '😔'
             day.classList.add('sad')
         })

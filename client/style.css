@@ -1,3 +1,4 @@
+/* Main Elements */
 body {
     box-sizing: border-box;
     max-width: 100%;
@@ -7,6 +8,9 @@ body {
     font-size: 1rem;
     padding: 0;
     margin: 0;
+}
+.app-body {
+    background-color: white;
 }
 main {
     display: flex;
@@ -24,6 +28,7 @@ h2 {
     /* border-radius: 25px 0 0 25px; */
 }
 
+/* Greeting Area ("Hello, username") */
 #name-area {
     position: relative;
 }
@@ -36,6 +41,8 @@ h2 {
     font-weight: 700;
 
 }
+
+/* Calendar Area */
 .cal-month {
     margin-top: 5px;
     padding: 20px;
@@ -107,8 +114,7 @@ h2 {
 #mood6 {
     color: #205456;
 }
-
-/* Style Dom Elements */
+/* Style Dom Elements in Calendar */
 .motivated {
     background-color: #ed833a;
     font-size: 1.7rem;
@@ -141,6 +147,7 @@ h2 {
     font-family: 'Noto Emoji', sans-serif;
 }
 
+/* To Do List Area */
 .todo-main {
     width: 100%;
 }
@@ -149,6 +156,31 @@ h2 {
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+.todo-holder {
+    padding-left: 20px;
+}
+.todo-holder li {
+    list-style: none;
+    padding: 12px 0 12px 40px;
+    position: relative;
+}
+.todo-holder li::before {
+    content: '';
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    background-image: url(../assets/1.png);
+    background-size: cover;
+    background-position: center;
+    top: 8px;
+    left: 0;
+}
+.todo-holder li.checked {
+    text-decoration: line-through;
+}
+.todo-holder li.checked::before {
+    background-image: url(../assets/2.png);
 }
 .add-task-area {
     padding-left: 15px;
@@ -175,6 +207,8 @@ h2 {
     border: 2px solid #205456;
     box-shadow: 3px 3px #90b7b0;
 }
+
+/* Gratitude Journal Area */
 .gratitude-holder, .gratitude-holder2 {
     padding: 10px 20px 10px 20px;
 }
@@ -192,6 +226,7 @@ h2 {
     margin-bottom: 10px;
 }
 
+/* Large Media Screen Size */
 @media screen and (min-width: 420px){
     body {
         background-color: #205456;
@@ -201,8 +236,7 @@ h2 {
     .app-body {
         margin: 30px auto;
         width: 400px;
-        height: 740px;
-        overflow: scroll;
+        min-height: 740px;
         background-color: white;
         box-shadow: 7px 7px #173b3c;
         border-radius: 15px;
