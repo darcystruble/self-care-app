@@ -24,27 +24,20 @@ h2 {
     /* border-radius: 25px 0 0 25px; */
 }
 
-/*  color palettes:
-HONEY, darkest to light = #622507, #a03604, #cc5a0b, #f89009, #b17224, #fbbe46
-*/
 #name-area {
     position: relative;
 }
-.squiggle {
-    position: absolute;
-    left: 0;
-    top: -30px;
-    z-index: -1;
-}
+
 .message {
     margin-left: 12px;
     margin-top: 30px;
     font-size: 1.6rem;
-    /* font-weight: 700; */
-    z-index: 99;
+    color: #F8C346;
+    font-weight: 700;
+
 }
 .cal-month {
-    margin-top: 35px;
+    margin-top: 5px;
     padding: 20px;
     height: 30px;
     width: 300px;
@@ -152,6 +145,9 @@ HONEY, darkest to light = #622507, #a03604, #cc5a0b, #f89009, #b17224, #fbbe46
 }
 .gratitude-main {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 .add-task-area {
     padding-left: 15px;
@@ -178,7 +174,31 @@ HONEY, darkest to light = #622507, #a03604, #cc5a0b, #f89009, #b17224, #fbbe46
     border: 2px solid #205456;
     box-shadow: 3px 3px #90b7b0;
 }
+.gratitude-holder, .gratitude-holder2 {
+    padding: 10px 20px 10px 20px;
+}
+.grat-spacing {
+    margin-bottom: 25px;
+}
+#gratitude-input {
+    margin-left: 20px;
+    padding: 20px;
+    width: 275px;
+    border: 2px solid #205456;
+    border-radius: 25px;
+    margin-bottom: 10px;
+}
 
 @media screen and (min-width: 420px){
-    
+    body {
+        background-color: #205456;
+        display: flex;
+        justify-content: center;
+    }
+    .app-body {
+        max-width: 400px;
+        min-height: 740px;
+        background-color: white;
+
+    }
 }

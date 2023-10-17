@@ -6,6 +6,9 @@ let checklist = document.querySelector('.todo-holder')
 let taskInput = document.querySelector('#type-task')
 let taskBtn = document.querySelector('#add-task')
 let nameArea = document.querySelector('.greeting')
+let gratInput = document.querySelector('#gratitude-input')
+let gratResult = document.querySelector('.gratitude-holder')
+let oldGratResults = document.querySelector('.gratitude-holder2')
 
 // VARIABLES
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -15,13 +18,12 @@ let curYear = curDate.getFullYear()
 const base = 'http://localhost:3001/'
 const currentUser = '652d563b750183a1591c276e'
 console.log(curDate)
-console.log('poop')
+
 // FUNCTIONS
 // axios testing
 const tester = async () => {
-    let testing = await axios.get(`${base}days`)
-    let findingDate = testing.data[2].date
-    console.log(findingDate)
+    let testing = await axios.get(`${base}todo`)
+    console.log(testing)
 }
 tester()
 
@@ -66,19 +68,44 @@ const makeCal = (month, year) => {
 }
 
 // task adder
-const addNewTask = () => {
+const addNewTask = async () => {
     let newLi = document.createElement('li')
     newLi.innerText = taskInput.value
     checklist.appendChild(newLi)
+    console.log(`${base}todo`)
+    await axios.post(`${base}todo`, {date: new Date(), text: taskInput.value, isComplete: false, userId: currentUser})
 }
 
 // gratitude journal
+const oldPosts = async () => {
+    let oldPostsAxios = await axios.get(`${base}gratitude`)
+    let testDate = new Date()
+    console.log(oldPostsAxios.data[3], testDate)
+    oldPostsAxios.data.forEach((post) => {
+        let onePost = document.createElement('div')
+        onePost.classList.add('grat-spacing')
+        console.log(post.entry)
+        if (post.userId == currentUser) {
+            onePost.innerText = post.entry
+        }
+        oldGratResults.appendChild(onePost)
+    })
+}
+oldPosts()
+
 
 // CALL FUNCTIONS
 makeCal(curMonth, curYear)
 
 // ONCLICK
 taskBtn.addEventListener('click', addNewTask)
+
+gratInput.addEventListener('keypress', async (e) => {
+    if(e.keyCode === 13) {
+        gratResult.innerText = gratInput.value
+        await axios.post(`${base}gratitude`, {date: new Date(), entry: gratInput.value, userId: currentUser})
+    }
+})
 
 document.querySelector('#prev-month').addEventListener('click', () => {
     console.log('back-click')
