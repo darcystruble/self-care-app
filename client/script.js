@@ -15,8 +15,7 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 let curDate = new Date()
 let curMonth = curDate.getMonth()
 let curYear = curDate.getFullYear()
-
-let compareDate = curDate.toISOString()
+// let compareDate = curDate.toISOString()
 // to be used before saving to api
 let timezone = new Date().getTimezoneOffset() * 60000
 let localISO = new Date(Date.now() - timezone).toISOString()
@@ -32,9 +31,11 @@ console.log(curDate.toISOString())
 const tester = async () => {
     let testing = await axios.get(`${base}todo`)
     let findingDate = testing.data[2].date
+    console.log(curMonth + 1)
     console.log(curDate)
+    console.log(timezone)
+    console.log(new Date(Date.now()))
     console.log(curDateAdjust)
-    console.log(compareDate)
     console.log(localISO)
 }
 tester()
@@ -82,8 +83,10 @@ const calDaysColored = async () => {
     let calDates = document.querySelectorAll('.cal-day')
     colorDates.data.forEach((day) => {
         let trim = day.date.slice(8, 10)
+        let trimMonth = day.date.slice(5, 7)
+        let curMonthAdj = curMonth + 1
         calDates.forEach((cal) => {
-            if (day.user === currentUser && parseInt(trim).toString() === cal.innerText) {
+            if (day.user === currentUser && parseInt(trim).toString() === cal.innerText && curMonthAdj.toString() === trimMonth) {
                 if (day.dayMood === 'motivated') {
                     cal.innerText = '🤩'
                     cal.classList.add('motivated')
@@ -232,7 +235,9 @@ document.querySelectorAll('.click-mood').forEach((mood) => {
     mood.addEventListener('click', async () => {
         let days = await axios.get(`${base}days`)
         days.data.forEach((day) => {
-            if (day.date.slice(0, 10) === localISO.slice(0, 10)) { return }
+            if (day.date.slice(0, 10) === localISO.slice(0, 10)) {
+                return
+            }
         })
         if (mood.innerText === 'Motivated') {
             await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'motivated', user: currentUser })
