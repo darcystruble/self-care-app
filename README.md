@@ -29,3 +29,6 @@ Below is a first draft of an ERD for the application.
 
 Calendar Tutorial:
 https://www.educative.io/answers/how-to-create-an-animated-calendar-with-html-and-css
+
+ISO convert to EST (convert date before saving)
+https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset

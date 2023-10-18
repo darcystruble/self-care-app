@@ -10,32 +10,38 @@ let gratInput = document.querySelector('#gratitude-input')
 let gratResult = document.querySelector('.gratitude-holder')
 let oldGratResults = document.querySelector('.gratitude-holder2')
 
-// VARIABLES
+// GLOBAL VARIABLES
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 let curDate = new Date()
 let curMonth = curDate.getMonth()
 let curYear = curDate.getFullYear()
+
 let compareDate = curDate.toISOString()
+// to be used before saving to api
+let timezone = new Date().getTimezoneOffset() * 60000
+let localISO = new Date(Date.now() - timezone).toISOString()
+let curDateAdjust = new Date(Date.now() - timezone)
+
 const base = 'http://localhost:3001/'
 const currentUser = '652d563b750183a1591c276e'
 // newObj.date = (getActivitiesTable.data[x].start_date_local.slice(0, 10))
-// console.log(curDate)
+console.log(curDate.toISOString())
 
 // FUNCTIONS
 // axios testing
 const tester = async () => {
     let testing = await axios.get(`${base}todo`)
     let findingDate = testing.data[2].date
-    console.log(findingDate.slice(0, 10))
-    let newDate = curDate.toISOString()
-    console.log(compareDate.slice(0, 10))
+    console.log(curDate)
+    console.log(curDateAdjust)
+    console.log(compareDate)
+    console.log(localISO)
 }
-// tester()
+tester()
 
 // Greetin the user
 const displayName = async () => {
     let thisuser = await axios.get(`${base}users/${currentUser}`)
-    console.log(thisuser.data.firstName)
     nameArea.innerText = thisuser.data.username
 }
 displayName()
@@ -71,12 +77,47 @@ const makeCal = (month, year) => {
     }
     
 }
+const calDaysColored = async () => {
+    let colorDates = await axios.get(`${base}days`)
+    let calDates = document.querySelectorAll('.cal-day')
+    colorDates.data.forEach((day) => {
+        let trim = day.date.slice(8, 10)
+        calDates.forEach((cal) => {
+            if (day.user === currentUser && parseInt(trim).toString() === cal.innerText) {
+                if (day.dayMood === 'motivated') {
+                    cal.innerText = '🤩'
+                    cal.classList.add('motivated')
+                }
+                if (day.dayMood === 'happy') {
+                    cal.innerText = '😄'
+                    cal.classList.add('happy')
+                }
+                if (day.dayMood === 'calm') {
+                    cal.innerText = '😌'
+                    cal.classList.add('calm')
+                }
+                if (day.dayMood === 'tired') {
+                    cal.innerText = '😴'
+                    cal.classList.add('tired')
+                }
+                if (day.dayMood === 'stressed') {
+                    cal.innerText = '😖'
+                    cal.classList.add('stressed')
+                }
+                if (day.dayMood === 'sad') {
+                    cal.innerText = '😔'
+                    cal.classList.add('sad')
+                }
+            }
+        })
+    })
+}
 
 // tasks functions
 const listTasks = async () => {
     let tasks = await axios.get(`${base}todo`)
     tasks.data.forEach((task) => {
-        if (task.date.slice(0, 10) === compareDate.slice(0, 10)){
+        if (task.date.slice(0, 10) === localISO.slice(0, 10)){
             let taskLi = document.createElement('li')
             taskLi.classList.add('list')
             taskLi.innerText = task.text
@@ -85,19 +126,27 @@ const listTasks = async () => {
                 taskLi.classList.add('checked')
             }
         }
+        // document.querySelectorAll('.delete').forEach((item) => {
+        //     item.addEventListener('click', () => {
+        //         console.log(item.parentElement.innerText)
+        //         console.log(task.text)
+        //         if (item.parentElement.innerText) {
+        //             // axios.delete(`${base}todo/${task._id}`)
+        //             // checklist.remove(item.parentElement)
+        //             console.log(task, 'poop')
+        //         }
+        //     })
+        // })
     })
     document.querySelectorAll('.list').forEach((bullet) => {
         bullet.addEventListener('click', () => {
             tasks.data.forEach((task) => {
-                console.log(task.isComplete)
                 if (bullet.innerText === task.text && task.isComplete === false) {
                     console.log(task._id)
                     axios.put(`${base}todo/${task._id}`, { isComplete: true })
                     bullet.classList.add('checked')
-                }
-                if (bullet.innerText === task.text && task.isComplete === true) {
-                    axios.put(`${base}todo/${task._id}`, { isComplete: false })
-                    bullet.classList.remove('checked')
+                } else {
+                    return
                 }
             })
         })
@@ -105,7 +154,7 @@ const listTasks = async () => {
 }
 
 const addNewTask = async () => {
-    await axios.post(`${base}todo`, { date: new Date(), text: taskInput.value, isComplete: false, userId: currentUser })
+    await axios.post(`${base}todo`, { date: curDateAdjust, text: taskInput.value, isComplete: false, userId: currentUser })
     let newLi = document.createElement('li')
     newLi.classList.add('list')
     newLi.innerText = taskInput.value
@@ -117,26 +166,44 @@ const addNewTask = async () => {
 // gratitude journal
 const oldPosts = async () => {
     let oldPostsAxios = await axios.get(`${base}gratitude`)
-    let testDate = new Date()
-    console.log(oldPostsAxios.data[3], testDate)
     oldPostsAxios.data.forEach((post) => {
-        let onePost = document.createElement('div')
-        onePost.classList.add('grat-spacing')
-        // console.log(post.entry)
-        if (post.userId == currentUser && post.date.slice(0, 10) !== compareDate.slice(0 ,10)) {
-            onePost.innerText = post.entry
+        let oldPost = document.createElement('div')
+        let oldDate = document.createElement('div')
+        oldDate.classList.add('grat-spacing')
+        if (post.userId === currentUser && post.date.slice(0, 10) !== localISO.slice(0 ,10)) {
+            oldDate.innerText = post.date.slice(5, 10)
+            oldPost.innerText = post.entry
         } else {
             return
         }
-        oldGratResults.appendChild(onePost)
+        oldGratResults.append(oldDate, oldPost)
     })
 }
-oldPosts()
+const displayNewPosts = async () => {
+    let newPostsAxios = await axios.get(`${base}gratitude`)
+    newPostsAxios.data.forEach((post) => {
+        let newPost = document.createElement('div')
+        let newDate = document.createElement('div')
+        newDate.classList.add('grat-spacing')
+        if (post.userId === currentUser && post.date.slice(0, 10) === localISO.slice(0 ,10)) {
+            newDate.innerText = post.date.slice(5, 10)
+            newDate.innerHTML += `<b> Today:</b>`
+            newPost.innerText = post.entry
+        } else {
+            return
+        }
+        gratResult.append(newDate, newPost)
+    })
+}
+
 
 
 // CALL FUNCTIONS
 makeCal(curMonth, curYear)
+calDaysColored()
 listTasks()
+displayNewPosts()
+oldPosts()
 
 // ONCLICK
 taskBtn.addEventListener('click', addNewTask)
@@ -144,12 +211,11 @@ taskBtn.addEventListener('click', addNewTask)
 gratInput.addEventListener('keypress', async (e) => {
     if(e.keyCode === 13) {
         gratResult.innerText = gratInput.value
-        await axios.post(`${base}gratitude`, {date: new Date(), entry: gratInput.value, userId: currentUser})
+        await axios.post(`${base}gratitude`, {date: curDateAdjust, entry: gratInput.value, userId: currentUser})
     }
 })
 
 document.querySelector('#prev-month').addEventListener('click', () => {
-    console.log('back-click')
     calDays.replaceChildren()
     --curMonth
     makeCal(curMonth, curYear)
@@ -159,66 +225,110 @@ document.querySelector('#next-month').addEventListener('click', () => {
     ++curMonth
     makeCal(curMonth, curYear)
 })
-
+console.log(curDate.toISOString().slice(8, 10))
 // CALENDAR CHANGES
-document.querySelector('#mood1').addEventListener('click', () => {
-    document.querySelectorAll('.cal-day').forEach((day) => {
-        day.addEventListener('click', () => {
-            day.classList.remove('happy', 'calm', 'tired', 'stressed', 'sad')
-            // console.log(day.innerText)
-            day.innerText = '🤩'
-            day.classList.add('motivated')
+document.querySelectorAll('.click-mood').forEach((mood) => {
+    let curMood = document.querySelector('.cur-date')
+    mood.addEventListener('click', async () => {
+        let days = await axios.get(`${base}days`)
+        days.data.forEach((day) => {
+            if (day.date.slice(0, 10) === localISO.slice(0, 10)) { return }
         })
-    })
+        if (mood.innerText === 'Motivated') {
+            await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'motivated', user: currentUser })
+            mood.classList.add('swap1')
+            curMood.innerText = '🤩'
+            curMood.classList.add('motivated')
+        }
+        if (mood.innerText === 'Happy') {
+            await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'happy', user: currentUser })
+            mood.classList.add('swap2')
+            curMood.innerText = '😄'
+            curMood.classList.add('happy')
+        }
+        if (mood.innerText === 'Calm') {
+            await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'calm', user: currentUser })
+            mood.classList.add('swap3')
+            curMood.innerText = '😌'
+            curMood.classList.add('calm')
+        }
+        if (mood.innerText === 'Tired') {
+            await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'tired', user: currentUser })
+            mood.classList.add('swap4')
+            curMood.innerText = '😴'
+            curMood.classList.add('tired')
+        }
+        if (mood.innerText === 'Stressed') {
+            await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'stressed', user: currentUser })
+            mood.classList.add('swap5')
+            curMood.innerText = '😖'
+            curMood.classList.add('stressed')
+        }
+        if (mood.innerText === 'Sad') {
+            await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'sad', user: currentUser })
+            mood.classList.add('swap6')
+            curMood.innerText = '😔'
+            curMood.classList.add('sad')
+        }
+    }, {once: true})
 })
 
-document.querySelector('#mood2').addEventListener('click', ()=> {
-    document.querySelectorAll('.cal-day').forEach((day) => {
-        day.addEventListener('click', () => {
-            day.classList.remove('calm', 'tired', 'stressed', 'sad')
-            // console.log(day.innerText)
-            day.innerText = '😄'
-            day.classList.add('happy')
-        })
-    })
-})
+// document.querySelector('#mood1').addEventListener('click', () => {
+//     document.querySelectorAll('.cal-day').forEach((day) => {
+//         day.addEventListener('click', () => {
+//             day.classList.remove('happy', 'calm', 'tired', 'stressed', 'sad')
+//             day.innerText = '🤩'
+//             day.classList.add('motivated')
+//         })
+//     })
+// })
 
-document.querySelector('#mood3').addEventListener('click', ()=> {
-    document.querySelectorAll('.cal-day').forEach((day) => {
-        day.addEventListener('click', () => {
-            day.classList.remove('tired', 'stressed', 'sad')
-            // console.log(day.innerText)
-            day.innerText = '😌'
-            day.classList.add('calm')
-        })
-    })
-})
-document.querySelector('#mood4').addEventListener('click', ()=> {
-    document.querySelectorAll('.cal-day').forEach((day) => {
-        day.addEventListener('click', () => {
-            day.classList.remove('stressed', 'sad')
-            // console.log(day.innerText)
-            day.innerText = '😴'
-            day.classList.add('tired')
-        })
-    })
-})
-document.querySelector('#mood5').addEventListener('click', ()=> {
-    document.querySelectorAll('.cal-day').forEach((day) => {
-        day.addEventListener('click', () => {
-            day.classList.remove('sad')
-            // console.log(day.innerText)
-            day.innerText = '😖'
-            day.classList.add('stressed')
-        })
-    })
-})
-document.querySelector('#mood6').addEventListener('click', ()=> {
-    document.querySelectorAll('.cal-day').forEach((day) => {
-        day.addEventListener('click', () => {
-            // console.log(day.innerText)
-            day.innerText = '😔'
-            day.classList.add('sad')
-        })
-    })
-})
+// document.querySelector('#mood2').addEventListener('click', ()=> {
+//     document.querySelectorAll('.cal-day').forEach((day) => {
+//         day.addEventListener('click', () => {
+//             day.classList.remove('calm', 'tired', 'stressed', 'sad')
+//             day.innerText = '😄'
+//             day.classList.add('happy')
+//         })
+//     })
+// })
+
+// document.querySelector('#mood3').addEventListener('click', ()=> {
+//     document.querySelectorAll('.cal-day').forEach((day) => {
+//         day.addEventListener('click', () => {
+//             day.classList.remove('tired', 'stressed', 'sad')
+//             // console.log(day.innerText)
+//             day.innerText = '😌'
+//             day.classList.add('calm')
+//         })
+//     })
+// })
+// document.querySelector('#mood4').addEventListener('click', ()=> {
+//     document.querySelectorAll('.cal-day').forEach((day) => {
+//         day.addEventListener('click', () => {
+//             day.classList.remove('stressed', 'sad')
+//             // console.log(day.innerText)
+//             day.innerText = '😴'
+//             day.classList.add('tired')
+//         })
+//     })
+// })
+// document.querySelector('#mood5').addEventListener('click', ()=> {
+//     document.querySelectorAll('.cal-day').forEach((day) => {
+//         day.addEventListener('click', () => {
+//             day.classList.remove('sad')
+//             // console.log(day.innerText)
+//             day.innerText = '😖'
+//             day.classList.add('stressed')
+//         })
+//     })
+// })
+// document.querySelector('#mood6').addEventListener('click', ()=> {
+//     document.querySelectorAll('.cal-day').forEach((day) => {
+//         day.addEventListener('click', () => {
+//             // console.log(day.innerText)
+//             day.innerText = '😔'
+//             day.classList.add('sad')
+//         })
+//     })
+// })

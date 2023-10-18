@@ -71,9 +71,13 @@ h2 {
     background-color: #ACDED5;
     box-shadow: 3px 3px #90b7b0;
 }
+.mood {
+    font-weight: 700;
+    font-size: 1.2rem;
+}
 .moods {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 .cal-days {
     margin-top: 20px;
@@ -82,6 +86,7 @@ h2 {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-template-rows: repeat(5, 1fr);
+    /* overflow: hidden; */
     gap: 2px;
 }
  .cal-day {
@@ -96,54 +101,89 @@ h2 {
     background-color: #ebbec6;
     border: none;
 }
-#mood1{
+/* Mood Colors */
+.click-mood {
+    cursor: pointer;
+}
+.mood1 {
     color:#ed833a;
 }
-#mood2{
+.swap1 {
+    font-weight: 700;
+    border-bottom: 2px solid #ed833a;
+}
+.mood2 {
     color:#F8C346;
 }
-#mood3{
+.swap2 {
+    font-weight: 700;
+    border-bottom: 2px solid #F8C346;
+}
+.mood3 {
     color:#F3A6B4;
 }
-#mood4 {
+.swap3 {
+    font-weight: 700;
+    border-bottom: 2px solid #F3A6B4;
+}
+.mood4 {
     color: #ACDED5;
 }
-#mood5{
+.swap4 {
+    font-weight: 700;
+    border-bottom: 2px solid #ACDED5;
+}
+.mood5 {
     color:#52B677;
 }
-#mood6 {
+.swap5 {
+    font-weight: 700;
+    border-bottom: 2px solid #52B677;
+}
+.mood6 {
     color: #205456;
 }
+.swap6 {
+    font-weight: 700;
+    border-bottom: 2px solid #205456;
+}
+
 /* Style Dom Elements in Calendar */
 .motivated {
     background-color: #ed833a;
-    font-size: 1.7rem;
+    font-size: 2.5rem;
+    overflow: hidden;
     font-family: 'Noto Emoji', sans-serif;
 }
 .happy {
     background-color: #F8C346;
-    font-size: 1.7rem;
+    font-size: 2.5rem;
+    overflow: hidden;
     font-family: 'Noto Emoji', sans-serif;
 }
 .calm {
     background-color: #F3A6B4;
-    font-size: 1.7rem;
+    font-size: 2.5rem;
+    overflow: hidden;
     font-family: 'Noto Emoji', sans-serif;
 }
 .tired {
     background-color: #ACDED5;
-    font-size: 1.7rem;
+    font-size: 2.5rem;
+    overflow: hidden;
     font-family: 'Noto Emoji', sans-serif;
 }
 .stressed {
     background-color: #52B677;
-    font-size: 1.7rem;
+    font-size: 2.5rem;
+    overflow: hidden;
     font-family: 'Noto Emoji', sans-serif;
 }
 .sad {
     background-color: #205456;
     color: white;
-    font-size: 1.7rem;
+    font-size: 2.5rem;
+    overflow: hidden;
     font-family: 'Noto Emoji', sans-serif;
 }
 
@@ -162,8 +202,9 @@ h2 {
 }
 .todo-holder li {
     list-style: none;
-    padding: 12px 0 12px 40px;
+    padding: 12px 33px 12px 40px;
     position: relative;
+    /* border-bottom: 2px solid #acded577; */
 }
 .todo-holder li::before {
     content: '';
@@ -176,6 +217,9 @@ h2 {
     top: 8px;
     left: 0;
 }
+.todo-holder li:hover::before{
+    cursor: pointer;
+}
 .todo-holder li.checked {
     text-decoration: line-through;
 }
@@ -184,6 +228,17 @@ h2 {
 }
 .add-task-area {
     padding-left: 15px;
+}
+.delete {
+    position: absolute;
+    right: 15px;
+    top: 3px;
+    width: 30px;
+    height: 30px;
+    font-size: 1.3rem;
+    color: #20545673;
+    line-height: 30px;
+    text-align: center;
 }
 #type-task {
     height: 25px;
@@ -214,8 +269,10 @@ h2 {
 }
 .grat-spacing {
     border-top: 2px solid #f3a6b470;
+    color: #F8C346;
     padding-top: 7px;
-    margin-bottom: 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 #gratitude-input {
     margin-left: 20px;
