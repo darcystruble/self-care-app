@@ -74,13 +74,32 @@ h2 {
 .mood {
     font-weight: 700;
     font-size: 1.2rem;
+    margin-top: 10px;
 }
 .moods {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 340px;
+}
+.mood-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+    padding: 5px;
+    width: 90px;
+    border: 2px solid #e6e2de;
+    box-shadow: 3px 3px #e2e2e2;
+    border-radius: 20px;
+}
+.mood-icon {
+    font-family: 'Noto Emoji', sans-serif;
+    font-size: 1.5rem;
 }
 .cal-days {
-    margin-top: 20px;
+    /* margin-top: 20px; */
     height: 250px;
     width: 340px;
     display: grid;
@@ -202,11 +221,22 @@ h2 {
 }
 .todo-holder li {
     list-style: none;
-    padding: 12px 33px 12px 40px;
+    padding: 12px 48px 12px 40px;
     position: relative;
     /* border-bottom: 2px solid #acded577; */
 }
-.todo-holder li::before {
+/* .todo-holder li::before {
+    content: '';
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    background-image: url(../assets/1.png);
+    background-size: cover;
+    background-position: center;
+    top: 8px;
+    left: 0;
+} */
+.checkbox {
     content: '';
     position: absolute;
     height: 28px;
@@ -217,15 +247,18 @@ h2 {
     top: 8px;
     left: 0;
 }
-.todo-holder li:hover::before{
-    cursor: pointer;
+.checkbox.checked {
+    background-image: url(../assets/2.png);
 }
+/* .todo-holder li:hover::before{
+    cursor: pointer;
+} */
 .todo-holder li.checked {
     text-decoration: line-through;
 }
-.todo-holder li.checked::before {
+/* .todo-holder li.checked::before {
     background-image: url(../assets/2.png);
-}
+} */
 .add-task-area {
     padding-left: 15px;
 }
@@ -237,6 +270,9 @@ h2 {
     height: 30px;
     font-size: 1.3rem;
     color: #20545673;
+    background-color: #e2e2e2;
+    border-radius: 50%;
+    padding: 1px 3px 1px 0;
     line-height: 30px;
     text-align: center;
 }
@@ -287,15 +323,32 @@ h2 {
 @media screen and (min-width: 420px){
     body {
         background-color: #205456;
+        background-image: url(../assets/background-self-care.png);
+        background-size: cover;
+        background-position: 50% 50%;
+        height: fit-content;
+        width: 100%;
         display: flex;
         justify-content: center;
     }
     .app-body {
         margin: 30px auto;
         width: 400px;
-        min-height: 740px;
+        height: 90vh;
+        overflow: auto;
         background-color: white;
-        box-shadow: 7px 7px #173b3c;
-        border-radius: 15px;
+        box-shadow: 8px 8px #173b3c;
+        /* border-radius: 15px; */
+    }
+    /* hover effects for computer screen */
+    #add-task:hover, .greater-less:hover {
+        transition: .2s;
+        background-color: #ffe4a5;
+        box-shadow: 3px 3px #ccb275;
+        cursor: pointer;
+    }
+    .delete:hover {
+        cursor: pointer;
+        background-color: #ebebeb;
     }
 }

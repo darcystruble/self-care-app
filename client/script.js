@@ -119,37 +119,41 @@ const calDaysColored = async () => {
 // tasks functions
 const listTasks = async () => {
     let tasks = await axios.get(`${base}todo`)
+    // create each task li item
     tasks.data.forEach((task) => {
         if (task.date.slice(0, 10) === localISO.slice(0, 10)){
             let taskLi = document.createElement('li')
             taskLi.classList.add('list')
-            taskLi.innerText = task.text
+            taskLi.innerHTML = `<span class="checkbox"></span><span class="compare">${task.text}</span><i class="delete">&#10005;</i>`
             checklist.appendChild(taskLi)
             if (task.isComplete === true){
                 taskLi.classList.add('checked')
+                taskLi.firstChild.classList.add('checked')
             }
         }
-        // document.querySelectorAll('.delete').forEach((item) => {
-        //     item.addEventListener('click', () => {
-        //         console.log(item.parentElement.innerText)
-        //         console.log(task.text)
-        //         if (item.parentElement.innerText) {
-        //             // axios.delete(`${base}todo/${task._id}`)
-        //             // checklist.remove(item.parentElement)
-        //             console.log(task, 'poop')
-        //         }
-        //     })
-        // })
     })
+    // checkbox checked when clicked
     document.querySelectorAll('.list').forEach((bullet) => {
+        console.log(bullet.firstChild.innerText)
         bullet.addEventListener('click', () => {
             tasks.data.forEach((task) => {
-                if (bullet.innerText === task.text && task.isComplete === false) {
+                if (bullet.firstChild.innerText === task.text && task.isComplete === false) {
                     console.log(task._id)
                     axios.put(`${base}todo/${task._id}`, { isComplete: true })
                     bullet.classList.add('checked')
                 } else {
                     return
+                }
+            })
+        })
+    })
+    document.querySelectorAll('.delete').forEach((x) => {
+        console.log(x.previousSibling.innerText)
+        tasks.data.forEach((task) => {
+            x.addEventListener('click', () => {
+                if (x.previousSibling.innerText === task.text && task.date.slice(0, 10) === localISO.slice(0, 10)) {
+                    axios.delete(`${base}todo/${task._id}`)
+                    x.parentElement.remove()
                 }
             })
         })
@@ -209,8 +213,10 @@ displayNewPosts()
 oldPosts()
 
 // ONCLICK
+// Checklist functions
 taskBtn.addEventListener('click', addNewTask)
 
+// Gratitude functions
 gratInput.addEventListener('keypress', async (e) => {
     if(e.keyCode === 13) {
         gratResult.innerText = gratInput.value
@@ -218,6 +224,7 @@ gratInput.addEventListener('keypress', async (e) => {
     }
 })
 
+// Change Calendar Dates
 document.querySelector('#prev-month').addEventListener('click', () => {
     calDays.replaceChildren()
     --curMonth
@@ -229,7 +236,8 @@ document.querySelector('#next-month').addEventListener('click', () => {
     makeCal(curMonth, curYear)
 })
 console.log(curDate.toISOString().slice(8, 10))
-// CALENDAR CHANGES
+
+// Calendar Mood Changes
 document.querySelectorAll('.click-mood').forEach((mood) => {
     let curMood = document.querySelector('.cur-date')
     mood.addEventListener('click', async () => {
@@ -277,63 +285,3 @@ document.querySelectorAll('.click-mood').forEach((mood) => {
         }
     }, {once: true})
 })
-
-// document.querySelector('#mood1').addEventListener('click', () => {
-//     document.querySelectorAll('.cal-day').forEach((day) => {
-//         day.addEventListener('click', () => {
-//             day.classList.remove('happy', 'calm', 'tired', 'stressed', 'sad')
-//             day.innerText = '🤩'
-//             day.classList.add('motivated')
-//         })
-//     })
-// })
-
-// document.querySelector('#mood2').addEventListener('click', ()=> {
-//     document.querySelectorAll('.cal-day').forEach((day) => {
-//         day.addEventListener('click', () => {
-//             day.classList.remove('calm', 'tired', 'stressed', 'sad')
-//             day.innerText = '😄'
-//             day.classList.add('happy')
-//         })
-//     })
-// })
-
-// document.querySelector('#mood3').addEventListener('click', ()=> {
-//     document.querySelectorAll('.cal-day').forEach((day) => {
-//         day.addEventListener('click', () => {
-//             day.classList.remove('tired', 'stressed', 'sad')
-//             // console.log(day.innerText)
-//             day.innerText = '😌'
-//             day.classList.add('calm')
-//         })
-//     })
-// })
-// document.querySelector('#mood4').addEventListener('click', ()=> {
-//     document.querySelectorAll('.cal-day').forEach((day) => {
-//         day.addEventListener('click', () => {
-//             day.classList.remove('stressed', 'sad')
-//             // console.log(day.innerText)
-//             day.innerText = '😴'
-//             day.classList.add('tired')
-//         })
-//     })
-// })
-// document.querySelector('#mood5').addEventListener('click', ()=> {
-//     document.querySelectorAll('.cal-day').forEach((day) => {
-//         day.addEventListener('click', () => {
-//             day.classList.remove('sad')
-//             // console.log(day.innerText)
-//             day.innerText = '😖'
-//             day.classList.add('stressed')
-//         })
-//     })
-// })
-// document.querySelector('#mood6').addEventListener('click', ()=> {
-//     document.querySelectorAll('.cal-day').forEach((day) => {
-//         day.addEventListener('click', () => {
-//             // console.log(day.innerText)
-//             day.innerText = '😔'
-//             day.classList.add('sad')
-//         })
-//     })
-// })
