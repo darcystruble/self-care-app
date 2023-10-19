@@ -1,11 +1,29 @@
 // DOM ELEMENTS
+let mainArea = document.querySelector('main')
+// top buttons
+// register
+let registerBtn = document.querySelector('.register')
+let registerForm = document.querySelector('.register-form')
+let regInputName = document.querySelector('.reg-name')
+let regInputUser = document.querySelector('.reg-user')
+let submitRegister = document.querySelector('.submit-register')
+// sign in 
+let signInBtn = document.querySelector('.sign-in')
+let signInForm = document.querySelector('.sign-in-form')
+let signInputName = document.querySelector('.sign-name')
+let signInputUser = document.querySelector('.sign-user')
+let submitSignIn = document.querySelector('.submit-sign-in')
+// greeting user
+let nameArea = document.querySelector('.greeting')
+// calendar
 let calendar = document.querySelector('.cal-main')
 let calMonths = document.querySelector('.cal-month')
 let calDays = document.querySelector('.cal-days')
+// to do list
 let checklist = document.querySelector('.todo-holder')
 let taskInput = document.querySelector('#type-task')
 let taskBtn = document.querySelector('#add-task')
-let nameArea = document.querySelector('.greeting')
+// gratitude log
 let gratInput = document.querySelector('#gratitude-input')
 let gratResult = document.querySelector('.gratitude-holder')
 let oldGratResults = document.querySelector('.gratitude-holder2')
@@ -15,16 +33,13 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 let curDate = new Date()
 let curMonth = curDate.getMonth()
 let curYear = curDate.getFullYear()
-// let compareDate = curDate.toISOString()
-// to be used before saving to api
+// adjusted date for saving into DB
 let timezone = new Date().getTimezoneOffset() * 60000
 let localISO = new Date(Date.now() - timezone).toISOString()
 let curDateAdjust = new Date(Date.now() - timezone)
-
+// axios informtion
 const base = 'http://localhost:3001/'
-const currentUser = '652d563b750183a1591c276e'
-// newObj.date = (getActivitiesTable.data[x].start_date_local.slice(0, 10))
-console.log(curDate.toISOString())
+let currentUser = '652d563b750183a1591c276e'
 
 // FUNCTIONS
 // axios testing
@@ -39,14 +54,42 @@ const tester = async () => {
     console.log(localISO)
 }
 // tester()
+// Open Register
+const registerNewUser = () => {
+    registerForm.style.display = 'block'
+}
+const closeRegForm = async () => {
+    await axios.post(`${base}users`, {username: regInputUser.value, firstName: regInputName.value})
+    registerForm.style.display = 'none'
+}
+const signInThisUser = () => {
+    signInForm.style.display = 'block'
+}
+const closeSignInForm = async () => {
+    let users = await axios.get(`${base}users`)
+    let newUserId
+    // console.log(signInputName.value)
+    // console.log(signInputUser.value)
+    users.data.forEach((user) => {
+        // console.log(user.firstName, signInputName.value)
+        // console.log(user.username, signInputUser.value)
+        if (user.firstName == signInputName.value && user.username == signInputUser.value) {
+            // console.log('hello!')
+            newUserId = user._id
+        }
+    })
+    console.log(newUserId)
+    currentUser = newUserId
+    signInForm.style.display = 'none'
+}
+signInBtn.addEventListener('click', signInThisUser)
+submitSignIn.addEventListener('click', closeSignInForm)
 
 // Greetin the user
 const displayName = async () => {
     let thisuser = await axios.get(`${base}users/${currentUser}`)
     nameArea.innerText = thisuser.data.username
 }
-displayName()
-
 
 // calendar functions
 const isLeapYear = (year) => {
@@ -121,7 +164,19 @@ const listTasks = async () => {
     let tasks = await axios.get(`${base}todo`)
     // create each task li item
     tasks.data.forEach((task) => {
-        if (task.date.slice(0, 10) === localISO.slice(0, 10)){
+        // current date and current user
+        if (task.date.slice(0, 10) === localISO.slice(0, 10) && task.userId === currentUser){
+            let taskLi = document.createElement('li')
+            taskLi.classList.add('list')
+            taskLi.innerHTML = `<span class="checkbox"></span><span class="compare">${task.text}</span><i class="delete">&#10005;</i>`
+            checklist.appendChild(taskLi)
+            if (task.isComplete === true){
+                taskLi.classList.add('checked')
+                taskLi.firstChild.classList.add('checked')
+            }
+        }
+        // not current date, yes current user, isComplete false
+        if (task.userId === currentUser && task.date.slice(0, 10) !== localISO.slice(0, 10) && task.isComplete === false) {
             let taskLi = document.createElement('li')
             taskLi.classList.add('list')
             taskLi.innerHTML = `<span class="checkbox"></span><span class="compare">${task.text}</span><i class="delete">&#10005;</i>`
@@ -146,10 +201,11 @@ const listTasks = async () => {
             })
         })
     })
+    // && task.date.slice(0, 10) === localISO.slice(0, 10)
     document.querySelectorAll('.delete').forEach((x) => {
         tasks.data.forEach((task) => {
             x.addEventListener('click', () => {
-                if (x.previousSibling.innerText === task.text && task.date.slice(0, 10) === localISO.slice(0, 10)) {
+                if (x.previousSibling.innerText === task.text) {
                     axios.delete(`${base}todo/${task._id}`)
                     x.parentElement.remove()
                 }
@@ -157,7 +213,6 @@ const listTasks = async () => {
         })
     })
 }
-
 
 const addNewTask = async () => {
     await axios.post(`${base}todo`, { date: curDateAdjust, text: taskInput.value, isComplete: false, userId: currentUser })
@@ -167,7 +222,6 @@ const addNewTask = async () => {
     checklist.appendChild(newLi)
     taskInput.value = ''
 }
-
 
 // gratitude journal
 const oldPosts = async () => {
@@ -210,6 +264,7 @@ const oldPosts = async () => {
         })
     })
 }
+
 const displayNewPosts = async () => {
     let newPostsAxios = await axios.get(`${base}gratitude`)
     newPostsAxios.data.forEach((post) => {
@@ -251,9 +306,8 @@ const displayNewPosts = async () => {
     })
 }
 
-
-
 // CALL FUNCTIONS
+displayName()
 makeCal(curMonth, curYear)
 calDaysColored()
 listTasks()
@@ -261,6 +315,10 @@ displayNewPosts()
 oldPosts()
 
 // ONCLICK
+// Top Buttons
+registerBtn.addEventListener('click', registerNewUser)
+submitRegister.addEventListener('click', closeRegForm)
+
 // Checklist functions
 taskBtn.addEventListener('click', addNewTask)
 

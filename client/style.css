@@ -19,27 +19,84 @@ main {
     align-items: center;
 }
 h2 {
-    /* background-color: #fada91; */
-    /* background: linear-gradient(.25turn, #F8C346 , rgba(255, 255, 0, 0)); */
     border-bottom: 2px solid #F8C346;
-    /* color: black; */
     font-family: 'Montserrat Alternates', sans-serif;
     padding-left: 10px;
-    /* border-radius: 25px 0 0 25px; */
 }
-
+h3 {
+    padding: 10px;
+    margin-bottom: 0;
+}
 /* Greeting Area ("Hello, username") */
 #name-area {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
 }
 
 .message {
-    margin-left: 12px;
-    margin-top: 30px;
+    margin-left: 15px;
+    margin-top: 20px;
     font-size: 1.6rem;
     color: #F8C346;
     font-weight: 700;
-
+}
+.buttons {
+    background-color: #e2e2e2;
+    padding: 5px 0;
+    display: flex;
+    justify-content: flex-end;
+}
+.sign-in, .register {
+    width: 60px;
+    height: 30px;
+    margin-right: 5px;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: .7rem;
+    font-weight: bold;
+    border-radius: 15px;
+    border: 2px solid #e2e2e2;
+    color: #aeaaa6;
+    background-color: white;
+}
+.register-form, .sign-in-form {
+    display: none;
+    position: absolute;
+    width: 250px;
+    background-color: #e2e2e2;
+    right: 0;
+    top: 40px;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 3px 3px 3px #aeaaa6;
+    z-index: 99;
+}
+.display {
+    display: 'block';
+}
+.register-form form, .sign-in-form form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.register-form input, .sign-in-form input {
+    height: 25px;
+    border-radius: 15px;
+    border: 2px solid #205456;
+    margin-bottom: 10px;
+}
+.submit-register, .submit-sign-in {
+    margin: 0 auto;
+    /* text-align: center; */
+    width: 65px;
+    height: 30px;
+    border: 2px solid #205456;
+    border-radius: 15px;
+    background-color: #ACDED5;
+    box-shadow: 3px 3px #90b7b0;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-weight: bold;
+    color: #205456;
 }
 
 /* Calendar Area */
@@ -326,8 +383,8 @@ h2 {
         /* border-radius: 15px; */
     }
     /* hover effects for computer screen */
-    #add-task:hover, .greater-less:hover {
-        transition: .2s;
+    #add-task:hover, .greater-less:hover, .submit-register:hover, .submit-sign-in:hover {
+        transition: .1s;
         background-color: #ffe4a5;
         box-shadow: 3px 3px #ccb275;
         cursor: pointer;
@@ -339,4 +396,39 @@ h2 {
     .mood-btn, .edit {
         cursor: pointer;
     }
+    .mood-btn.m1:hover {
+        transition: .1s;
+        border-color: #ed833a;
+        box-shadow: 3px 3px #ed833a;
+    }
+    .mood-btn.m2:hover {
+        transition: .1s;
+        border-color: #F8C346;
+        box-shadow: 3px 3px #F8C346;
+    }
+    .mood-btn.m3:hover {
+        transition: .1s;
+        border-color: #F3A6B4;
+        box-shadow: 3px 3px #F3A6B4;
+    }
+    .mood-btn.m4:hover {
+        transition: .1s;
+        border-color: #ACDED5;
+        box-shadow: 3px 3px #ACDED5;
+    }
+    .mood-btn.m5:hover {
+        transition: .1s;
+        border-color: #52B677;
+        box-shadow: 3px 3px #52B677;
+    }
+    .mood-btn.m6:hover {
+        transition: .1s;
+        border-color: #205456;
+        box-shadow: 3px 3px #205456;
+    }
+    .sign-in:hover, .register:hover {
+        border-color: #90b7b0;
+        color: #90b7b0;
+    }
+    
 }

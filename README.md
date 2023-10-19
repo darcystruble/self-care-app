@@ -26,7 +26,11 @@ Below is an initial rendering with the general layout of the app.
 There are 4 main tables each connected to the userID.
 - The "userID" is the parent table, containing user information.
 - The "dayObject" table has information about each mood for each day and is connected using the userID
-- The "gratitude" 
+- The "todo" table stores the to do entry string, a default false setting for the isComplete key, the current date and the user id.
+- The "gratitude" table stores a gratitude journal entry, the current date and the user id.
+
+## Implementation and Functionality
+
 
 ## Resources
 

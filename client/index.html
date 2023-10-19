@@ -14,7 +14,31 @@
 <body>
     <div class="app-body">
         <div id="name-area">
-            <div class="message">Hello, <span class="greeting"></span></div>
+                <div class="buttons">
+                    <button class="register">Register</button>
+                    <button class="sign-in">Sign In</button>
+                </div>
+                <div class="register-form">
+                    <h3>Register:</h3>
+                    <form action="#">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" name="firstName" id="firstName" class="reg-name">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" class="reg-user">
+                        <button class="submit-register">Submit</button>
+                    </form>
+                </div>
+                <div class="sign-in-form">
+                    <h3>Sign In:</h3>
+                    <form action="#">
+                        <label for="firstName">First Name:</label>
+                        <input type="text" name="firstName" id="firstName" class="sign-name">
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" class="sign-user">
+                        <button class="submit-sign-in">Submit</button>
+                    </form>
+                </div>
+                <div class="message">Hello, <span class="greeting"></span></div>
         </div>
         <main>
             <div class="cal-main">
@@ -27,27 +51,27 @@
                 </div>
                 <div class="mood">Add Today's Mood:</div>
                 <div class="moods">
-                    <span class="mood-btn">
+                    <span class="mood-btn m1">
                         <span class="mood-icon mood1">🤩</span>
                         <span class="click-mood mood1">Motivated</span>
                     </span>
-                    <span class="mood-btn">
+                    <span class="mood-btn m2">
                         <span class="mood-icon mood2">😄</span>
                         <span class="click-mood mood2">Happy</span>
                     </span>
-                    <span class="mood-btn">
+                    <span class="mood-btn m3">
                         <span class="mood-icon mood3">😌</span>
                         <span class="click-mood mood3">Calm</span>
                     </span>
-                    <span class="mood-btn">
+                    <span class="mood-btn m4">
                         <span class="mood-icon mood4">😴</span>
                         <span class="click-mood mood4">Tired</span>
                     </span>
-                    <span class="mood-btn">
+                    <span class="mood-btn m5">
                         <span class="mood-icon mood5">😖</span>
                         <span class="click-mood mood5">Stressed</span>
                     </span>
-                    <span class="mood-btn">
+                    <span class="mood-btn m6">
                         <span class="mood-icon mood6">😔</span>
                         <span class="click-mood mood6">Sad</span>
                     </span>
