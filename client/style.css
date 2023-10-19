@@ -393,7 +393,7 @@ h3 {
         cursor: pointer;
         background-color: #ebebeb;
     }
-    .mood-btn, .edit {
+    .mood-btn, .edit, .checkbox {
         cursor: pointer;
     }
     .mood-btn.m1:hover {

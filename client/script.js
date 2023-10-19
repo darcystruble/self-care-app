@@ -65,26 +65,19 @@ const closeRegForm = async () => {
 const signInThisUser = () => {
     signInForm.style.display = 'block'
 }
-const closeSignInForm = async () => {
+const closeSignInForm = async (e) => {
     let users = await axios.get(`${base}users`)
     let newUserId
-    // console.log(signInputName.value)
-    // console.log(signInputUser.value)
     users.data.forEach((user) => {
-        // console.log(user.firstName, signInputName.value)
-        // console.log(user.username, signInputUser.value)
         if (user.firstName == signInputName.value && user.username == signInputUser.value) {
-            // console.log('hello!')
             newUserId = user._id
         }
     })
     console.log(newUserId)
     currentUser = newUserId
     signInForm.style.display = 'none'
+    console.log(currentUser)
 }
-signInBtn.addEventListener('click', signInThisUser)
-submitSignIn.addEventListener('click', closeSignInForm)
-
 // Greetin the user
 const displayName = async () => {
     let thisuser = await axios.get(`${base}users/${currentUser}`)
@@ -191,10 +184,12 @@ const listTasks = async () => {
     document.querySelectorAll('.list').forEach((bullet) => {
         bullet.addEventListener('click', () => {
             tasks.data.forEach((task) => {
-                if (bullet.firstChild.innerText === task.text && task.isComplete === false) {
+                console.log(bullet.childNodes[1].innerText)
+                if (bullet.childNodes[1].innerText === task.text && task.isComplete === false) {
                     console.log(task._id)
                     axios.put(`${base}todo/${task._id}`, { isComplete: true })
-                    bullet.classList.add('checked')
+                    bullet.childNodes[0].classList.add('checked')
+                    bullet.childNodes[1].classList.add('.checked')
                 } else {
                     return
                 }
@@ -318,6 +313,8 @@ oldPosts()
 // Top Buttons
 registerBtn.addEventListener('click', registerNewUser)
 submitRegister.addEventListener('click', closeRegForm)
+signInBtn.addEventListener('click', signInThisUser)
+submitSignIn.addEventListener('click', closeSignInForm)
 
 // Checklist functions
 taskBtn.addEventListener('click', addNewTask)
