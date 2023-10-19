@@ -38,7 +38,7 @@ const tester = async () => {
     console.log(curDateAdjust)
     console.log(localISO)
 }
-tester()
+// tester()
 
 // Greetin the user
 const displayName = async () => {
@@ -134,7 +134,6 @@ const listTasks = async () => {
     })
     // checkbox checked when clicked
     document.querySelectorAll('.list').forEach((bullet) => {
-        console.log(bullet.firstChild.innerText)
         bullet.addEventListener('click', () => {
             tasks.data.forEach((task) => {
                 if (bullet.firstChild.innerText === task.text && task.isComplete === false) {
@@ -148,7 +147,6 @@ const listTasks = async () => {
         })
     })
     document.querySelectorAll('.delete').forEach((x) => {
-        console.log(x.previousSibling.innerText)
         tasks.data.forEach((task) => {
             x.addEventListener('click', () => {
                 if (x.previousSibling.innerText === task.text && task.date.slice(0, 10) === localISO.slice(0, 10)) {
@@ -160,11 +158,12 @@ const listTasks = async () => {
     })
 }
 
+
 const addNewTask = async () => {
     await axios.post(`${base}todo`, { date: curDateAdjust, text: taskInput.value, isComplete: false, userId: currentUser })
     let newLi = document.createElement('li')
     newLi.classList.add('list')
-    newLi.innerText = taskInput.value
+    newLi.innerHTML = `<span class="checkbox"></span><span class="compare">${taskInput.value}</span><i class="delete">&#10005;</i>`
     checklist.appendChild(newLi)
     taskInput.value = ''
 }
@@ -176,14 +175,39 @@ const oldPosts = async () => {
     oldPostsAxios.data.forEach((post) => {
         let oldPost = document.createElement('div')
         let oldDate = document.createElement('div')
+        let oldHolder = document.createElement('div')
         oldDate.classList.add('grat-spacing')
+        oldPost.classList.add('make-edit')
         if (post.userId === currentUser && post.date.slice(0, 10) !== localISO.slice(0 ,10)) {
             oldDate.innerText = post.date.slice(5, 10)
+            oldDate.innerHTML += `<span class="edit">&#9998;</span>`
             oldPost.innerText = post.entry
         } else {
             return
         }
-        oldGratResults.append(oldDate, oldPost)
+        oldHolder.append(oldDate, oldPost)
+        oldGratResults.appendChild(oldHolder)
+    })
+    document.querySelectorAll('.edit').forEach((edit) => {
+        edit.addEventListener('click', () => {
+            let makeEdit = edit.parentElement.parentElement.lastChild
+            let curID = ''
+            oldPostsAxios.data.forEach((data) => {
+                if (makeEdit.innerText === data.entry){
+                    curID = data._id
+                }
+            })
+            console.log(curID)
+            console.log(makeEdit.contentEditable)
+            makeEdit.contentEditable = true
+            makeEdit.addEventListener('keypress', (e) => {
+                if (e.keyCode === 13) {
+                    makeEdit.contentEditable = false
+                    console.log(makeEdit.innerText)
+                    axios.put(`${base}gratitude/${curID}`, { entry: makeEdit.innerText})
+                }
+            })
+        })
     })
 }
 const displayNewPosts = async () => {
@@ -191,15 +215,39 @@ const displayNewPosts = async () => {
     newPostsAxios.data.forEach((post) => {
         let newPost = document.createElement('div')
         let newDate = document.createElement('div')
+        let newHolder = document.createElement('div')
         newDate.classList.add('grat-spacing')
+        newPost.classList.add('make-edit')
         if (post.userId === currentUser && post.date.slice(0, 10) === localISO.slice(0 ,10)) {
             newDate.innerText = post.date.slice(5, 10)
-            newDate.innerHTML += `<b> Today:</b>`
+            newDate.innerHTML += `<b> Today:</b><span class="edit">&#9998;</span>`
             newPost.innerText = post.entry
         } else {
             return
         }
-        gratResult.append(newDate, newPost)
+        newHolder.append(newDate, newPost)
+        gratResult.appendChild(newHolder)
+    })
+    document.querySelectorAll('.edit').forEach((edit) => {
+        edit.addEventListener('click', () => {
+            let makeEdit = edit.parentElement.parentElement.lastChild
+            let curID = ''
+            newPostsAxios.data.forEach((data) => {
+                if (makeEdit.innerText === data.entry){
+                    curID = data._id
+                }
+            })
+            console.log(curID)
+            console.log(makeEdit.contentEditable)
+            makeEdit.contentEditable = true
+            makeEdit.addEventListener('keypress', (e) => {
+                if (e.keyCode === 13) {
+                    makeEdit.contentEditable = false
+                    console.log(makeEdit.innerText)
+                    axios.put(`${base}gratitude/${curID}`, { entry: makeEdit.innerText})
+                }
+            })
+        })
     })
 }
 
@@ -238,46 +286,41 @@ document.querySelector('#next-month').addEventListener('click', () => {
 console.log(curDate.toISOString().slice(8, 10))
 
 // Calendar Mood Changes
-document.querySelectorAll('.click-mood').forEach((mood) => {
+document.querySelectorAll('.mood-btn').forEach((mood) => {
     let curMood = document.querySelector('.cur-date')
+    console.log(mood.lastElementChild.innerText)
     mood.addEventListener('click', async () => {
-        let days = await axios.get(`${base}days`)
-        days.data.forEach((day) => {
-            if (day.date.slice(0, 10) === localISO.slice(0, 10)) {
-                return
-            }
-        })
-        if (mood.innerText === 'Motivated') {
+        if (mood.lastElementChild.innerText === 'Motivated') {
             await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'motivated', user: currentUser })
             mood.classList.add('swap1')
             curMood.innerText = '🤩'
             curMood.classList.add('motivated')
         }
-        if (mood.innerText === 'Happy') {
+        if (mood.lastElementChild.innerText === 'Happy') {
             await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'happy', user: currentUser })
             mood.classList.add('swap2')
             curMood.innerText = '😄'
             curMood.classList.add('happy')
         }
-        if (mood.innerText === 'Calm') {
+        if (mood.lastElementChild.innerText === 'Calm') {
             await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'calm', user: currentUser })
             mood.classList.add('swap3')
             curMood.innerText = '😌'
             curMood.classList.add('calm')
         }
-        if (mood.innerText === 'Tired') {
+        if (mood.lastElementChild.innerText === 'Tired') {
             await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'tired', user: currentUser })
             mood.classList.add('swap4')
             curMood.innerText = '😴'
             curMood.classList.add('tired')
         }
-        if (mood.innerText === 'Stressed') {
+        if (mood.lastElementChild.innerText === 'Stressed') {
             await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'stressed', user: currentUser })
             mood.classList.add('swap5')
             curMood.innerText = '😖'
             curMood.classList.add('stressed')
         }
-        if (mood.innerText === 'Sad') {
+        if (mood.lastElementChild.innerText === 'Sad') {
             await axios.post(`${base}days`, { date: curDateAdjust, dayMood: 'sad', user: currentUser })
             mood.classList.add('swap6')
             curMood.innerText = '😔'

@@ -19,11 +19,14 @@ Below is an initial rendering with the general layout of the app.
 ![Rendering of an iPhone with Self Care App](./assets/phonescreen-app.png)
 
 
-## Initial ERD
+## ERD and Schemas
 
-Below is a first draft of an ERD for the application.
+![ERD](./assets/ERD3.png)
 
-![ERD](./assets/ERD-second.png)
+There are 4 main tables each connected to the userID.
+- The "userID" is the parent table, containing user information.
+- The "dayObject" table has information about each mood for each day and is connected using the userID
+- The "gratitude" 
 
 ## Resources
 

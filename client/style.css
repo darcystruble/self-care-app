@@ -121,9 +121,6 @@ h2 {
     border: none;
 }
 /* Mood Colors */
-.click-mood {
-    cursor: pointer;
-}
 .mood1 {
     color:#ed833a;
 }
@@ -223,19 +220,7 @@ h2 {
     list-style: none;
     padding: 12px 48px 12px 40px;
     position: relative;
-    /* border-bottom: 2px solid #acded577; */
 }
-/* .todo-holder li::before {
-    content: '';
-    position: absolute;
-    height: 28px;
-    width: 28px;
-    background-image: url(../assets/1.png);
-    background-size: cover;
-    background-position: center;
-    top: 8px;
-    left: 0;
-} */
 .checkbox {
     content: '';
     position: absolute;
@@ -250,15 +235,9 @@ h2 {
 .checkbox.checked {
     background-image: url(../assets/2.png);
 }
-/* .todo-holder li:hover::before{
-    cursor: pointer;
-} */
 .todo-holder li.checked {
     text-decoration: line-through;
 }
-/* .todo-holder li.checked::before {
-    background-image: url(../assets/2.png);
-} */
 .add-task-area {
     padding-left: 15px;
 }
@@ -318,6 +297,12 @@ h2 {
     border-radius: 25px;
     margin-bottom: 10px;
 }
+.edit {
+    float: inline-end;
+    margin-right: 10px;
+    font-size: 1.5rem;
+    /* color: #b8923b; */
+}
 
 /* Large Media Screen Size */
 @media screen and (min-width: 420px){
@@ -350,5 +335,8 @@ h2 {
     .delete:hover {
         cursor: pointer;
         background-color: #ebebeb;
+    }
+    .mood-btn, .edit {
+        cursor: pointer;
     }
 }
