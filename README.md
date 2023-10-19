@@ -1,12 +1,12 @@
 # Self Care App
 
-The Self Care App is a mobile first application that allows the user to track their mood, use pre-made self care to-do checklists, edit the to-do checklist and log a graditude entry each day.
+The Self Care App is a mobile first application that allows the user to track their mood, create self care to-do checklists, edit the to-do checklist and log a graditude entry each day.
 
 User Stories:
-- Users can track mood with different mood options.
-- Stored user data will create a mood map rendering on home screen
-- Users can add or delete items from the to-do list
-- Users can add, update or delete entries in the graditude section
+- Users can track mood with different mood options
+- User data will create a mood map rendering on home screen
+- Users can add, update or delete items from the to-do list
+- Users can add or update entries in the graditude section
 
 ![Photo of Home Screen](./assets/Self-Care-App-Main.png)
 
@@ -39,6 +39,13 @@ App functionality:
 - The Gratitude section allows the user to post a new entry and to edit current entries.
 
 ![App Photo 2](./assets/Self-Care-App-2.png)
+![App Photo 2](./assets/Self-Care-App-3.png)
+
+## Future Planning
+
+As I continue to work on this project, I plan to add: 
+- A functioning sign in button
+- Logic for making sure the day displays the most recent mood, so user can update them as they want.
 
 ## Resources
 
