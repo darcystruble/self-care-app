@@ -45,7 +45,8 @@ App functionality:
 
 As I continue to work on this project, I plan to add: 
 - A functioning sign in button
-- Logic for making sure the day displays the most recent mood, so user can update them as they want.
+- Logic for making sure the day displays the most recent mood, so user can update moods throughout the day
+- Add an edit function to the gratitude entries
 
 ## Resources
 
