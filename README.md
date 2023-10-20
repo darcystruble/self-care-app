@@ -55,3 +55,6 @@ https://www.educative.io/answers/how-to-create-an-animated-calendar-with-html-an
 
 ISO convert to EST (convert date before saving)
 https://stackoverflow.com/questions/10830357/javascript-toisostring-ignores-timezone-offset
+
+To Do list tutorial:
+https://www.youtube.com/watch?v=G0jO8kUrg-I&t=1358s
