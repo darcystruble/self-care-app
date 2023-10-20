@@ -65,6 +65,7 @@ const closeRegForm = async () => {
 const signInThisUser = () => {
     signInForm.style.display = 'block'
 }
+console.log(currentUser)
 const closeSignInForm = async (e) => {
     let users = await axios.get(`${base}users`)
     let newUserId
